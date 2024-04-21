@@ -28,7 +28,7 @@ Y luego ejecutar:
 6) Exit
 ````
 
---> El funcionamiento es simple se crea un struct donde almacenan los distintos datos necesarios
+--> Se crea un struct donde almacenan los datos de los pacientes
 
 ````c
 typedef struct {
