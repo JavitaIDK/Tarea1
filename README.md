@@ -1,33 +1,109 @@
-En este *repl* puedes encontrar varios ejemplos que te pueden ayudar con las tareas de estructura.
+# Codigo para lista de espera de un hospital con prioridad
 
-## Código de Ejemplo (main)
-Para ejecutar el main primero debemos compilar (en la carpeta raíz)
-````
+<br>
+<br>
+
+Para ejecutar el codigo hay que usar estos comandos:
+````console
 gcc tdas/*.c main.c -Wno-unused-result -o main
 ````
 
 Y luego ejecutar:
-````
+````console
 ./main
 ````
 
-## TDAs
-En la carpeta `tdas` se encuentran implementados distintos TDAs que puedes utilizar (lista, pila, cola, cola con prioridad y mapas). 
+<br>
 
-Las implementaciones no son las más eficientes (todas usan como estructura de datos una **lista enlazada**), por lo que puedes reemplazarlas por las que has realizado en los labs.
+<hr>
 
-## Otros códigos (en carpeta examples)
-Para ejecutar los distintos ejemplos que hay en la carpeta `examples`, primero debes compilarlos. Si estamos en la carpeta raíz:
-````
-gcc tdas/*.c examples/example2_menu.c -Wno-unused-result -o example
-````
-Y luego ejecutarlos:
-````
-./example
+--> El codigo te abre un menu donde tu eliges que opcion te interesa.
+
+````bash
+1) Registrar paciente `nombre`, `edad`, `sintoma`
+2) Asignar prioridad al paciente `ALTA`, `MEDIA`, `BAJA`
+3) Mostrar lista de espera
+4) Atender al siguiente paciente
+5) Mostrar paciente por prioridad `ALTA`, `MEDIA`, `BAJA`
+6) Exit
 ````
 
-Se incluyen los siguientes ejemplos:
-* `example1_list`: Uso del TDA Lista, inserción y eliminación de elementos.
-* `example2_menu`: Ejemplo de menú con submenús.
-* `example3_readcsv`: Ejemplo de lectura desde un archivo csv y almacenamiento en datos estructurados.
-* `example4_map`: Ejemplo de uso del TDA mapa.
+--> El funcionamiento es simple se crea un struct donde almacenan los distintos datos necesarios
+
+````c
+typedef struct {
+  char nombre[MAX];
+  char nombreMayus[MAX];
+  char sintoma[MAX];
+  int edad;
+  int identificacion;
+  char prioridad[MAX];
+  int importancia;
+  time_t hora;
+} TipoPaciente;
+````
+
+--> **NOTA**
+````c
+ time_t hora;
+````
+Vendria siendo la hora en la que se registran los pacientes
+
+<br>
+
+### --> PROTOTIPOS DE FUNCIONES PRINCIPALES
+
+`void mostrarMenuPrincipal();`
+
+`void registrar_paciente(List *pacientes);`
+
+`void ordenarLista(List *pacientes);`
+
+`void mostrar_lista_pacientes(List *pacientes);`
+
+`void asignar_prioridad(List *pacientes);`
+
+`void atender_siguiente(List *pacientes);`
+
+`void mostrar_xPrioridad(List *pacientes);`
+
+<br>
+
+### --> PROTOTIPOS DE FUNCIONES SECUNDARIAS
+
+`void toMayus(char *texto);`
+
+`void corregir(char *texto);`
+
+`void nameMayus(List *pacientes);`
+
+<br>
+
+<hr>
+
+### --> Qsort para ordenar el array por prioridad e identificacion (orden de llegada)
+
+En el programa se utiliza un **qsort** para facilitar el proceso y ser mas eficiente, cree una funcion para comparar la prioridad y si son iguales por la identificacion (orden de llegada), Despues se ordenan al llamar al qsort en `ordenarLista`.
+
+````c
+int compararPacientes(const void *a, const void *b) //funcion para comparar los pacientes
+````
+````c
+ qsort(tempArray, totalPacientes, sizeof(TipoPaciente),compararPacientes); //qsort para ordenar de mayor a menor
+````
+<br>
+
+### --> OBSERVACIONES
+- Se pondra prioridad **BAJA** por default al registar a algun paciente.
+- Si le agregas una prioridad a un paciente que no existe arrojara el error "ERROR: EL PACIENTE NO EXISTE, INTENTELO DE NUEVO".
+- Al querer cambiar la prioridad de un paciente, el nombre tiene que tener las mismas letras que al inicio, da igual las mayusculas o minusculas.
+
+
+<br>
+
+<br>
+
+###### 💻 | Development By Sarwak
+
+
+
