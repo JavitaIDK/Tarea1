@@ -31,9 +31,9 @@ void presioneTeclaParaContinuar() {
 // Menú principal
 void mostrarMenuPrincipal() {
   limpiarPantalla();
-  puts("========================================");
-  puts("     Sistema de Gestión Hospitalaria");
-  puts("========================================");
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
+  puts("|    Sistema de Gestión Hospitalaria   |");
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
 
   puts("1) Registrar paciente");
   puts("2) Asignar prioridad a paciente");
@@ -41,26 +41,34 @@ void mostrarMenuPrincipal() {
   puts("4) Atender al siguiente paciente");
   puts("5) Mostrar pacientes por prioridad");
   puts("6) Salir");
+  printf("\n");
 }
 
 int totalPacientes = 0; // variable global para contar los pacientes
 
 void registrar_paciente(List *pacientes) {
-  printf("Registrar nuevo paciente\n");
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
+  puts("|     Registrar nuevo paciente    |");
+  printf("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★\n\n");
+  getchar();
   TipoPaciente *nuevoPaciente =
       malloc(sizeof(TipoPaciente)); // rerservando memoria
   if (nuevoPaciente == NULL) {
     printf("ERROR EN ASIGNAR MEMORIA");
     return;
   }
-  printf("Ingrese el nombre del paciente --> ");
-  scanf("%s", nuevoPaciente->nombre);
+  printf("Ingrese el nombre del paciente\n");
+  printf("➤ ");
+  scanf("%[^\n]", nuevoPaciente->nombre);
 
-  printf("Ingrese la edad del paciente --> ");
+  printf("\nIngrese la edad del paciente\n");
+  printf("➤ ");
   scanf("%d", &nuevoPaciente->edad);
 
-  printf("Ingrese el sintoma del paciente --> ");
-  scanf("%s", nuevoPaciente->sintoma);
+  printf("\nIngrese el sintoma del paciente\n");
+  printf("➤ ");
+  getchar();
+  scanf("%[^\n]", nuevoPaciente->sintoma);
 
   nuevoPaciente->identificacion = totalPacientes; // asigna el orden de llegada
   strcpy(nuevoPaciente->prioridad, "Bajo");       // asigna prioidad baja
@@ -112,32 +120,36 @@ void ordenarLista(List *pacientes) {
 void mostrar_lista_pacientes(List *pacientes) {
   ordenarLista(pacientes); // funcion para ordenar la lista
   TipoPaciente *pacienteActual = list_first(pacientes);
-  puts("======================================================================="
-       "=");
-  printf("|                       Pacientes en espera: %d                      "
-         "  |\n",
+  if (totalPacientes == 0) {
+    puts("No hay pacientes en espera, intentelo de nuevo");
+    return;
+  }
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
+  printf("|                             Pacientes en espera: %d                "
+         "                                  |\n",
          totalPacientes);
-  puts("======================================================================="
-       "=");
-  puts("|     Nombres     |     Edad     |     Sintoma     |     Prioridad     "
-       "|");
-  puts("======================================================================="
-       "=");
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
+  puts("|          Nombres        |          Edad        |          Sintoma    "
+       "    |          Prioridad      |");
+  puts("★----------------------------------------------------------------------"
+       "------------------------------★");
 
   while (pacienteActual != NULL) { // mientras el paciente actual exista
-    printf("|%12s     |%9d     |%12s     |%14s     |", pacienteActual->nombre,
-           pacienteActual->edad, pacienteActual->sintoma,
-           pacienteActual->prioridad);
+    printf("%17s        %14d        %18s        %19s        ",
+           pacienteActual->nombre, pacienteActual->edad,
+           pacienteActual->sintoma, pacienteActual->prioridad);
     struct tm *local = localtime(&pacienteActual->hora);
-    printf(" %02d:%02d:%02d", local->tm_hour, local->tm_min,
+    printf("     %02d:%02d:%02d", local->tm_hour, local->tm_min,
            local->tm_sec); // imprimir la hora de llegada
     printf("\n");
     if (pacienteActual == NULL) // verifica si la lista esta vacia
       return;
     pacienteActual = list_next(pacientes);
   }
-  printf("====================================================================="
-         "===\n");
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
 }
 
 // Modificar textos
@@ -169,17 +181,20 @@ void asignar_prioridad(List *pacientes) {
   char copiaNombre[MAX]; // variable para escribir el nombre que busco
   char priority[MAX];    // variable para escribir la prioridad
   bool existe = false;   // variable inicializada en falso para despues ver si
-                       // existe el paciente buscado
-  puts("========================================");
+                         // existe el paciente buscado
+  printf("\n");
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
   puts("|     Asignar prioridad al paciente    |");
-  puts("========================================");
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
   printf("Ingrese el nombre del paciente--> ");
-  scanf("%s", copiaNombre);
+  getchar();
+  scanf("%[^\n]", copiaNombre);
   toMayus(copiaNombre);
 
   while (true) {
     printf("\nAsigne prioridad (Bajo, Medio, Alto) --> ");
     scanf("%s", priority);
+    getchar();
     toMayus(priority);
     if (strcmp(priority, "BAJO") == 0 ||
         strcmp(priority, "MEDIO") ==
@@ -216,9 +231,13 @@ void asignar_prioridad(List *pacientes) {
 
 void atender_siguiente(List *pacientes) {
   TipoPaciente *pacienteActual = list_first(pacientes);
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
+  puts("|    Atender al siguiente paciente     |");
+  puts("★━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━★");
   if (pacienteActual != NULL) { // mientras el paciente no sea null
-    printf("PACIENTE ATENDIDO\n");
-    printf("Nombre: %s\nEdad: %d\nSintoma: %s", pacienteActual->nombre,
+    puts("PACIENTE ATENDIDO");
+    puts("⇓⇓⇓⇓⇓⇓⇓⇓⇓⇓⇓⇓⇓⇓⇓⇓⇓");
+    printf("Nombre ➤ %s\nEdad ➤ %d\nSintoma ➤ %s\n", pacienteActual->nombre,
            pacienteActual->edad, pacienteActual->sintoma);
     list_popCurrent(pacientes); // eliminar el paciente actual
     totalPacientes--;
