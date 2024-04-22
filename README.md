@@ -102,8 +102,3 @@ int compararPacientes(const void *a, const void *b) //funcion para comparar los 
 <br>
 
 <br>
-
-###### 💻 | Development By Sarwak
-
-
-
